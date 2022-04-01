@@ -2,8 +2,6 @@
 <resources>
     <declare-styleable name="ButtonProgress">
         <attr name="progress_button_title" format="string"/>
-
+        <attr name="progress_button_loading_title" format="string"/>
     </declare-styleable>
-
-
 </resources>

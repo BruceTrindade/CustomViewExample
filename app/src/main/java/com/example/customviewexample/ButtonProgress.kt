@@ -19,11 +19,22 @@ class ButtonProgress @JvmOverloads constructor(
             .inflate(LayoutInflater.from(context), this, true)
 
         init {
-
+            setLayout(attrs)
         }
 
         private fun setLayout( attrs: AttributeSet?){
+            attrs.let {
+                val attributes = context.obtainStyledAttributes(
+                    it,
+                    R.styleable.ButtonProgress
+                )
 
+                setBackgroundResource(R.drawable.progress_button)
+
+                val titleResId = attributes.getResourceId(R.styleable.ButtonProgress_progress_button_title)
+
+                attributes.recycle()
+            }
         }
 
 }
