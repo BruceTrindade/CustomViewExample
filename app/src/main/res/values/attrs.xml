@@ -4,4 +4,9 @@
         <attr name="progress_button_title" format="string"/>
         <attr name="progress_button_loading_title" format="string"/>
     </declare-styleable>
+
+    <declare-styleable name="ProgressButton">
+        <attr name="size" format="string"/>
+        <attr name="progress_button_loading_title" format="string"/>
+    </declare-styleable>
 </resources>

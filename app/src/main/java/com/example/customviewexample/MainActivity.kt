@@ -12,14 +12,14 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         val binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
-        binding.progressButton.setOnClickListener {
-            binding.progressButton.setLoading()
-            lifecycleScope.launch {
-                delay(3_000)
-                binding.progressButton.setNormal()
-            }
-
-        }
+//
+//        binding.progressButton.setOnClickListener {
+//            binding.progressButton.setLoading()
+//            lifecycleScope.launch {
+//                delay(3_000)
+//                binding.progressButton.setNormal()
+//            }
+//
+//        }
     }
 }
