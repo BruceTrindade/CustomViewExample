@@ -9,7 +9,7 @@ import androidx.core.content.ContextCompat
 import com.example.customviewexample.R
 import com.google.android.material.shape.MaterialShapeDrawable
 
-class ProgressButton : ConstraintLayout {
+class ButtonBase : ConstraintLayout {
 
     constructor(context: Context) : super(context) {
         initialComponent(null)
