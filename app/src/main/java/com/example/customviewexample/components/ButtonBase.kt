@@ -37,22 +37,22 @@ class ButtonBase : ConstraintLayout {
     }
 
     private fun initialComponent(attrs: AttributeSet?) {
-        createRoundedCourners()
+      //  createRoundedCourners()
     }
 
     private fun createRoundedCourners(size: Size){
 
-        val radiusResource = when (size) {
+      /*  val radiusResource = when (size) {
            // Size.SMALL -> R.dimen.size_radius_16_px
             //Size.MEDIUM -> R.dimen.size_radius_16_px
             //Size.LARGE -> R.dimen.size_radius_16_px
-        }
+        }*/
 
-        val radius = resources.getDimensionPixelSize(radiusResource)
+       // val radius = resources.getDimensionPixelSize(radiusResource)
         val color = ContextCompat.getColor(context, R.color.design_default_color_on_secondary)
         val text = TextView(context).apply {
             val buttonBackground = MaterialShapeDrawable().apply {
-                setCornerSize(radius.toFloat())
+                //setCornerSize(radius.toFloat())
                 setTint(color)
             }
             background = buttonBackground
