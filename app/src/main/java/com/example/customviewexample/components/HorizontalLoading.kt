@@ -39,31 +39,31 @@ class HorizontalLoading @JvmOverloads constructor(
             invalidate()
             requestLayout()
         }
-    var delayTime: Int = 0
+    var mFadeTime: Int = 0
         set(value) {
             field = value
             invalidate()
             requestLayout()
         }
-    var color: Int = 0
+    var mColor: Int = 0
         set(value) {
             field = value
             invalidate()
             requestLayout()
         }
 
-    private val animation = mutableListOf<Animator>()
+    private val animators = mutableListOf<Animator>()
 
     @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
-    var primaryAnimation: ValueAnimator? = null
+    var primaryAnimator: ValueAnimator? = null
 
     @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
-    var dotHorizontalLoading: LinearLayout
+    var dotProgressBar: LinearLayout
 
     @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
-    var background = R.drawable.ic_dot_loading
+    var dotBackground = R.drawable.ic_dot_loading
 
-    private var duration: Long = 0L
+    private var durationEachView: Long = 0L
 
     init {
         context.theme.obtainStyledAttributes(
@@ -74,25 +74,25 @@ class HorizontalLoading @JvmOverloads constructor(
 
             try {
                 dotsNumbers = getInteger(R.styleable.HorizontalLoading_numberDots, 3)
-                delayTime = getInteger(R.styleable.HorizontalLoading_fadeTime, 2)
-                color = getColor(R.styleable.HorizontalLoading_color, getDefaultColor())
+                mFadeTime = getInteger(R.styleable.HorizontalLoading_fadeTime, 2)
+                mColor = getColor(R.styleable.HorizontalLoading_color, getDefaultColor())
                 val radiusAttr = getInteger(R.styleable.HorizontalLoading_radius, 3)
 
                 dotRadius = convertDpToPixel(radiusAttr.toFloat(), context)
-                duration = calculateDurationForEachView()
-                dotHorizontalLoading = LinearLayout(context)
+                durationEachView = calculateDurationForEachView()
+                dotProgressBar = LinearLayout(context)
                 val progressBarLayoutParams =
                     LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT)
                 progressBarLayoutParams.gravity = Gravity.CENTER
-                dotHorizontalLoading.layoutParams = progressBarLayoutParams
-                addView(dotHorizontalLoading)
-                animation.clear()
+                dotProgressBar.layoutParams = progressBarLayoutParams
+                addView(dotProgressBar)
+                animators.clear()
                 for (index in 0 until dotsNumbers) {
                     val dot = View(context)
                     composeParamsForDotView(context, dot)
-                    dotHorizontalLoading.addView(dot)
+                    dotProgressBar.addView(dot)
                     val animator = createFadeAnimation(dot)
-                    animation.add(animator)
+                    animators.add(animator)
                 }
                 animationProcedures()
             } finally {
@@ -114,7 +114,7 @@ class HorizontalLoading @JvmOverloads constructor(
         animator.addUpdateListener {
             view.alpha = it.animatedValue as Float
         }
-        animator.duration = duration
+        animator.duration = durationEachView
         animator.repeatCount = 1
         animator.repeatMode = ValueAnimator.REVERSE
         animator.interpolator = AccelerateDecelerateInterpolator()
@@ -126,9 +126,9 @@ class HorizontalLoading @JvmOverloads constructor(
         val layoutParams = LayoutParams(dotRadius * 2, dotRadius * 2)
         layoutParams.rightMargin = convertDpToPixel(4f, context)
         dot.layoutParams = layoutParams
-        val icDot = context.getDrawable(background)
+        val icDot = context.getDrawable(dotBackground)
         icDot?.let {
-            setDrawableColor(it, color)
+            setDrawableColor(it, mColor)
         }
         dot.background = icDot
     }
@@ -142,31 +142,31 @@ class HorizontalLoading @JvmOverloads constructor(
     }
 
     private fun animationProcedures() {
-        primaryAnimation?.cancel()
-        primaryAnimation = ValueAnimator.ofInt(0, dotsNumbers)
-        primaryAnimation?.addUpdateListener {
+        primaryAnimator?.cancel()
+        primaryAnimator = ValueAnimator.ofInt(0, dotsNumbers)
+        primaryAnimator?.addUpdateListener {
             if (it.animatedValue != dotsNumbers)
-                animation[it.animatedValue as Int].start()
+                animators[it.animatedValue as Int].start()
         }
-        primaryAnimation?.repeatMode = ValueAnimator.RESTART
-        primaryAnimation?.repeatCount = ValueAnimator.INFINITE
-        primaryAnimation?.duration = durationInMilli()
-        primaryAnimation?.interpolator = LinearInterpolator()
+        primaryAnimator?.repeatMode = ValueAnimator.RESTART
+        primaryAnimator?.repeatCount = ValueAnimator.INFINITE
+        primaryAnimator?.duration = durationInMilli()
+        primaryAnimator?.interpolator = LinearInterpolator()
     }
 
     private fun durationInMilli() =
-        TimeUnit.MILLISECONDS.convert(delayTime.toLong(), TimeUnit.SECONDS)
+        TimeUnit.MILLISECONDS.convert(mFadeTime.toLong(), TimeUnit.SECONDS)
 
     private fun calculateDurationForEachView(): Long {
         return durationInMilli() / dotsNumbers
     }
 
     private fun stopAnimation() {
-        primaryAnimation?.cancel()
+        primaryAnimator?.cancel()
     }
 
     fun startAnimation() {
-        primaryAnimation?.start()
+        primaryAnimator?.start()
     }
 
     override fun setVisibility(visibility: Int) {
