@@ -9,14 +9,4 @@
         <attr name="size" format="string"/>
     </declare-styleable>
 
-    <declare-styleable name="HorizontalLoading">
-        <attr name="numberDots" format="integer" />
-        <attr name="fadeTime" format="integer" />
-        <attr name="radius" format="integer" />
-        <attr name="color" format="color"/>
-        <attr name="dotRadius" format="integer" />
-
-    </declare-styleable>
-
-
 </resources>
